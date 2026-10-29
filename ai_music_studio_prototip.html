@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>AI Music Studio — prototip</title>
+<style>
+:root{--bg:#0b1020;--panel:#131b2e;--panel2:#1a2540;--text:#f5f7ff;--muted:#aab5cf;--accent:#a78bfa;--accent2:#67e8f9;--border:#2a3653}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top right,#25204b 0,#0b1020 42%);color:var(--text);min-height:100vh}
+.wrap{max-width:1040px;margin:auto;padding:24px 16px 56px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:20px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;color:#111827;font-size:21px}.pill{font-size:12px;color:#d9d5ff;border:1px solid #544a85;padding:7px 10px;border-radius:999px}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0 0 12px;letter-spacing:-1.5px}.grad{background:linear-gradient(90deg,#c4b5fd,#67e8f9);-webkit-background-clip:text;background-clip:text;color:transparent}.intro{color:var(--muted);font-size:16px;line-height:1.6;max-width:680px;margin:0 0 24px}
+.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.card{background:rgba(19,27,46,.92);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:0 18px 50px #0002}.card h2{font-size:18px;margin:0 0 6px}.sub{color:var(--muted);font-size:13px;margin:0 0 18px;line-height:1.5}.field{margin:15px 0}.label{display:block;font-size:13px;font-weight:700;margin-bottom:8px;color:#e5e9f7}input,textarea,select{width:100%;border:1px solid #35415f;border-radius:12px;background:#0d1425;color:var(--text);padding:12px 13px;font:inherit;font-size:14px;outline:none}textarea{min-height:150px;resize:vertical;line-height:1.55}input:focus,textarea:focus,select:focus{border-color:var(--accent)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:0;border-radius:12px;padding:13px 16px;font-weight:800;cursor:pointer;font-size:14px}.primary{width:100%;color:#111827;background:linear-gradient(90deg,#c4b5fd,#67e8f9)}.secondary{background:#202b46;color:var(--text);border:1px solid #35415f}.btn:active{transform:translateY(1px)}.note{font-size:12px;color:var(--muted);line-height:1.55;margin-top:12px}.tile{padding:15px;border-radius:15px;background:#0e1629;border:1px solid var(--border);margin-top:12px}.tilehead{display:flex;gap:10px;align-items:center;margin-bottom:8px}.ico{width:38px;height:38px;border-radius:12px;background:#252044;display:grid;place-items:center;font-size:18px}.tile h3{margin:0;font-size:14px}.tile p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.status{display:none;margin-top:14px;padding:12px;border-radius:12px;background:#182a3a;border:1px solid #2c5662;color:#d9faff;font-size:13px;line-height:1.5}.status.show{display:block}.foot{margin-top:22px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.wrap{padding:18px 12px 36px}.card{padding:16px}.pill{display:none}.row{grid-template-columns:1fr}.top{margin-bottom:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">♫</div><span>AI Music Studio</span></div>
+    <div class="pill">PROTOTIP PERSONAL · V1</div>
+  </header>
+  <h1>Din versuri, în <span class="grad">melodie.</span></h1>
+  <p class="intro">Spațiul tău pentru idei muzicale în limba română. Pregătește versurile, alege stilul și planifică videoclipul — totul într-o interfață care se adaptează la laptop și telefon.</p>
+  <div class="layout">
+    <section class="card">
+      <h2>🎵 Creează o melodie</h2>
+      <p class="sub">Completează detaliile proiectului. Diacriticele românești sunt acceptate.</p>
+      <div class="field"><label class="label" for="title">Titlul melodiei</label><input id="title" placeholder="Ex.: Până la capăt"></div>
+      <div class="field"><label class="label" for="lyrics">Versuri</label><textarea id="lyrics" placeholder="[Strofa 1]&#10;Scrie aici versurile tale...&#10;&#10;[Refren]&#10;Scrie aici refrenul..."></textarea></div>
+      <div class="field"><label class="label" for="style">Stil muzical</label><input id="style" value="Manele moderne, voce masculină, refren memorabil, acordeon, bass puternic"></div>
+      <div class="row">
+        <div class="field"><label class="label" for="voice">Voce</label><select id="voice"><option>Masculină</option><option>Feminină</option><option>Duet</option><option>Instrumental</option></select></div>
+        <div class="field"><label class="label" for="lang">Limbă</label><select id="lang"><option>Română</option><option>Engleză</option><option>Altă limbă</option></select></div>
+      </div>
+      <div class="field"><label class="label" for="reference">Audio de referință (opțional)</label><input id="reference" type="file" accept="audio/*"></div>
+      <button class="btn primary" id="prepare">Pregătește proiectul</button>
+      <div class="status" id="status"></div>
+      <p class="note">Notă: acesta este primul prototip de interfață. Generarea audio nu este conectată încă la un model AI; nu pretinde că a generat o melodie.</p>
+    </section>
+    <aside class="card">
+      <h2>🎬 Planifică videoclipul</h2>
+      <p class="sub">Pregătește conceptul pentru videoclipul AI cu persoane.</p>
+      <div class="field"><label class="label" for="scene">Descrierea scenei</label><textarea id="scene" style="min-height:110px" placeholder="Ex.: Un cântăreț într-un decor elegant, lumină cinematografică, mișcări naturale, cadre realiste..."></textarea></div>
+      <div class="row">
+        <div class="field"><label class="label" for="format">Format video</label><select id="format"><option>16:9 — YouTube</option><option>9:16 — Shorts / TikTok</option><option>1:1 — Pătrat</option></select></div>
+        <div class="field"><label class="label" for="look">Aspect vizual</label><select id="look"><option>Realist, cinematic</option><option>Concert live</option><option>Poveste romantică</option><option>Urban, noaptea</option></select></div>
+      </div>
+      <button class="btn secondary" id="videoPlan" style="width:100%">Pregătește descrierea video</button>
+      <div class="status" id="videostatus"></div>
+      <div class="tile"><div class="tilehead"><div class="ico">🇷🇴</div><div><h3>Română cu diacritice</h3><p>ă · â · î · ș · ț</p></div></div><p>Scrie versurile cu diacritice. Pronunția finală depinde de modelul audio pe care îl vom conecta.</p></div>
+      <div class="tile"><div class="tilehead"><div class="ico">💾</div><div><h3>Proiecte și export</h3><p>Etapă următoare</p></div></div><p>Vom adăuga salvarea proiectelor și descărcarea audio/video după ce alegem un generator care permite integrare gratuită.</p></div>
+    </aside>
+  </div>
+  <div class="foot">AI Music Studio · Prototip local · Fără cont și fără plăți</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+$('prepare').addEventListener('click', () => {
+  const title = $('title').value.trim() || 'Melodie fără titlu';
+  const lyrics = $('lyrics').value.trim();
+  const style = $('style').value.trim() || 'Stil nedefinit';
+  const voice = $('voice').value, lang = $('lang').value;
+  const file = $('reference').files[0];
+  const s = $('status'); s.classList.add('show');
+  s.textContent = lyrics
+    ? `Proiect pregătit: „${title}”. Limbă: ${lang}. Voce: ${voice}. Stil: ${style}. ${file ? 'Fișier de referință selectat: '+file.name+'. ' : ''}Următorul pas este conectarea unui motor AI de generare audio. Nu s-a generat încă un fișier audio.`
+    : 'Adaugă mai întâi versurile melodiei. Poți folosi diacriticele românești: ă, â, î, ș, ț.';
+});
+$('videoPlan').addEventListener('click', () => {
+  const scene = $('scene').value.trim();
+  const format = $('format').value, look = $('look').value;
+  const s = $('videostatus'); s.classList.add('show');
+  s.textContent = scene
+    ? `Concept pregătit pentru videoclip: ${scene} Format: ${format}. Stil vizual: ${look}. Următorul pas este conectarea unui generator video AI. Nu s-a generat încă un videoclip.`
+    : 'Descrie întâi scena pe care vrei să o vezi în videoclip.';
+});
+</script>
+</body>
+</html>
