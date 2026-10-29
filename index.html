@@ -56,16 +56,41 @@ h1{font-size:clamp(30px,5vw,48px);line-height:1.05;margin:0 0 12px;letter-spacin
 </div>
 <script>
 const $ = id => document.getElementById(id);
-$('prepare').addEventListener('click', () => {
+$('prepare').addEventListener('click', async () => {
   const title = $('title').value.trim() || 'Melodie fără titlu';
   const lyrics = $('lyrics').value.trim();
-  const style = $('style').value.trim() || 'Stil nedefinit';
-  const voice = $('voice').value, lang = $('lang').value;
-  const file = $('reference').files[0];
-  const s = $('status'); s.classList.add('show');
-  s.textContent = lyrics
-    ? `Proiect pregătit: „${title}”. Limbă: ${lang}. Voce: ${voice}. Stil: ${style}. ${file ? 'Fișier de referință selectat: '+file.name+'. ' : ''}Următorul pas este conectarea unui motor AI de generare audio. Nu s-a generat încă un fișier audio.`
-    : 'Adaugă mai întâi versurile melodiei. Poți folosi diacriticele românești: ă, â, î, ș, ț.';
+  const style = $('style').value.trim() || 'Romanian pop';
+  const voice = $('voice').value;
+  const lang = $('lang').value;
+  const s = $('status');
+  s.classList.add('show');
+  if (!lyrics) {
+    s.textContent = 'Adaugă mai întâi versurile melodiei.';
+    return;
+  }
+  s.textContent = 'Se încearcă generarea melodiei...';
+  try {
+    const response = await fetch(
+      'https://ai-music-backend.mitusimona2018.workers.dev/',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, lyrics, style, voice, lang })
+      }
+    );
+    const data = await response.json();
+    if (!response.ok || !data.ok) {
+      s.textContent = 'Generarea nu a reușit: ' +
+        (data.error || JSON.stringify(data.result || data));
+      return;
+    }
+    s.textContent = 'Răspuns primit de la motorul AI: ' +
+      JSON.stringify(data.result);
+  } catch (error) {
+    s.textContent =
+      'Nu am putut contacta motorul AI. Verifică backend-ul Cloudflare.';
+    console.error(error);
+  }
 });
 $('videoPlan').addEventListener('click', () => {
   const scene = $('scene').value.trim();
